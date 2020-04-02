@@ -68,7 +68,12 @@ const scope = {
 
     // Log D: number
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+      {A: 75},
+      {B: 64},
+      {C: 64},
+      {D: 30}
+    ]
     return result;
 
     // Annotation:
@@ -102,11 +107,16 @@ const scope = {
 
     // Log D: greeting
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+      {A: 'Yo'},
+      {B: 'Hey'},
+      {C: 'Hey'},
+      {D: 'Hello'}
+    ]
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // var gets overwritten by leaky variables
   },
 
   exerciseD() {
@@ -136,7 +146,12 @@ const scope = {
 
     // Log D: greeting
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+      {A:'Hi'},
+      {B:'welcome'},
+      {C:'welcome'},
+      {D:'Howdy'}
+    ];
     return result;
 
     // Annotation:
@@ -168,7 +183,12 @@ const scope = {
 
     // Log D: name
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = [
+      {C:'Brittany'},
+      {A:'Nathaniel'},
+      {B:'Nathaniel'},
+      {D:'Brittany'}
+    ];
     return result;
 
     // Annotation:
