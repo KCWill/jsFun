@@ -308,8 +308,19 @@ const cakePrompts = {
     //    'berries': 2,
     //    ...etc
     // }
+    //Make new object with keys. If key doesn't exist, make one and add one to the shopping list. If key already exixts, only add one to the list.
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let list = cakes.reduce((acc,cake) => {
+      cake.toppings.forEach(topping => {
+        if(acc[topping] === undefined){
+          acc[topping] = 1;
+        } else {
+          acc[topping]++;
+        }
+      })
+      return acc
+    },{})
+    const result = list;
     return result;
 
     // Annotation:
@@ -343,8 +354,17 @@ const classPrompts = {
     //   { roomLetter: 'E', program: 'FE', capacity: 22 },
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let feClasses = classrooms.reduce((acc,room)=> {
+      if(room.program === 'FE'){
+      let roomDet = {};
+      roomDet.roomLetter = room.roomLetter;
+      roomDet.program = room.program;
+      roomDet.capacity = room.capacity;
+      acc.push(roomDet)
+      }
+      return acc
+    },[])
+    const result = feClasses;
     return result;
 
     // Annotation:
@@ -358,8 +378,21 @@ const classPrompts = {
     //   feCapacity: 110,
     //   beCapacity: 96
     // }
+    let capacities = classrooms.reduce((acc,room)=> {
+      if(acc['feCapacity'] === undefined && room.program === 'FE'){
+        acc['feCapacity'] = room.capacity;
+      }
+      else if(acc['beCapacity'] === undefined && room.program === 'BE'){
+        acc['beCapacity'] = room.capacity;
+      } else if(room.program === 'FE'){
+        acc['feCapacity'] += room.capacity;
+      } else {
+        acc['beCapacity'] += room.capacity;
+      }
+      return acc;
+    },{})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = capacities;
     return result;
 
     // Annotation:
