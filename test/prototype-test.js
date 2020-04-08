@@ -20,7 +20,7 @@ const {
 
 describe("PROTOTYPES", () => {
   describe("Kitty Prompts", () => {
-    it.only("orangeKittyNames", () => {
+    it("orangeKittyNames", () => {
       const e = kittyPrompts.orangeKittyNames();
       expect(e).to.deep.equal(["Tiger", "Snickers"])
     }), it("sortByAge", () => {
@@ -158,7 +158,7 @@ describe("PROTOTYPES", () => {
     }), it("totalInventory", () => {
       const e = cakePrompts.totalInventory();
       expect(e).to.deep.equal(59)
-    }), it("allToppings", () => {
+    }), it.only("allToppings", () => {
       const e = cakePrompts.allToppings();
       expect(e).to.deep.equal(["dutch process cocoa", "toasted sugar", "smoked sea salt", "berries", "edible flowers", "mint", "cranberry", "crystallized ginger"])
     }), it("groceryList", () => {
@@ -407,7 +407,7 @@ describe("PROTOTYPES", () => {
         Christie: [1, 2, 3, 4],
         Will: [1, 2, 3, 4]
       })
-    }), it("curriculumPerTeacher", () => {
+    }), it("culumPerTeacher", () => {
       const e = turingPrompts.curriculumPerTeacher();
       expect(e).to.deep.equal({
         html: ["Travis", "Louisa"],

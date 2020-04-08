@@ -1,17 +1,51 @@
-const { kitties } = require('./datasets/kitties');
-const { clubs } = require('./datasets/clubs');
-const { mods } = require('./datasets/mods');
-const { cakes } = require('./datasets/cakes');
-const { classrooms } = require('./datasets/classrooms');
-const { breweries } = require('./datasets/breweries');
-const { nationalParks } = require('./datasets/nationalParks');
-const { books } = require('./datasets/books');
-const { weather } = require('./datasets/weather');
-const { instructors, cohorts } = require('./datasets/turing');
-const { bosses, sidekicks } = require('./datasets/bosses');
-const { constellations, stars } = require('./datasets/astronomy');
-const { weapons, characters } = require('./datasets/ultima');
-const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
+const {
+  kitties
+} = require('./datasets/kitties');
+const {
+  clubs
+} = require('./datasets/clubs');
+const {
+  mods
+} = require('./datasets/mods');
+const {
+  cakes
+} = require('./datasets/cakes');
+const {
+  classrooms
+} = require('./datasets/classrooms');
+const {
+  breweries
+} = require('./datasets/breweries');
+const {
+  nationalParks
+} = require('./datasets/nationalParks');
+const {
+  books
+} = require('./datasets/books');
+const {
+  weather
+} = require('./datasets/weather');
+const {
+  instructors,
+  cohorts
+} = require('./datasets/turing');
+const {
+  bosses,
+  sidekicks
+} = require('./datasets/bosses');
+const {
+  constellations,
+  stars
+} = require('./datasets/astronomy');
+const {
+  weapons,
+  characters
+} = require('./datasets/ultima');
+const {
+  dinosaurs,
+  humans,
+  movies
+} = require('./datasets/dinosaurs');
 
 
 
@@ -26,7 +60,7 @@ const kittyPrompts = {
   orangeKittyNames() {
     const orangeCats = kitties.filter(cat => cat.color === 'orange');
     const orangeCatNames = [];
-    orangeCats.forEach(cat => orangeCatNames.push(cat.name))
+    orangeCats.forEach(cat =>                 orangeCatNames.push(cat.name))
 
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
@@ -39,8 +73,10 @@ const kittyPrompts = {
 
   sortByAge() {
     // Sort the kitties by their age
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    kitties.sort((a,b) => {
+      return b.age - a.age;
+    })
+    const result = kitties
     return result;
 
     // Annotation:
@@ -48,20 +84,16 @@ const kittyPrompts = {
   },
 
   growUp() {
-    // Return an array of kitties who have all grown up by 2 years e.g.
-    // [{
-    //   name: 'Felicia',
-    //   age: 4,
-    //   color: 'grey'
-    // },
-    // {
-    //   name: 'Tiger',
-    //   age: 7,
-    //   color: 'orange'
-    // },
-    // ...etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    kitties.forEach(kitty => {
+      kitty.age = kitty.age + 2;
+    })
+
+    kitties.sort((a,b) =>{
+      return b.age - a.age
+    })
+
+    const result = kitties;
     return result;
   }
 };
@@ -92,8 +124,23 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
+    // iterate through clubs.members to get member names in an array
+    // get rid of duplicates
+    // turn into object keys
+    // iterate thruogh object keys and then iterate through clubs to add to object key (name);
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+     let names = clubs.reduce((acc,group) => {
+       group.members.forEach((name) => {
+         if (acc[name] === undefined){
+           acc[name] = [group.club];
+         } else {
+           acc[name].push(group.club);
+         }
+       })
+      return acc
+    },{})
+    const result = names;
     return result;
 
     // Annotation:
@@ -128,8 +175,19 @@ const modPrompts = {
     //   { mod: 3, studentsPerInstructor: 10 },
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
+    // Iterate through mods and then extract number of students and instructors
+    //divide students by instructors
+    //create object with mod and studentsPerInstructor keys
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+     let studentsPerTeacher = mods.reduce((acc,course) => {
+      let eachClass = {};
+      eachClass.mod = course.mod;
+      eachClass.studentsPerInstructor = course.students / course.instructors;
+      acc.push(eachClass)
+      return acc
+    },[])
+
+    const result = studentsPerTeacher;
     return result;
 
     // Annotation:
@@ -163,8 +221,15 @@ const cakePrompts = {
     //    { flavor: 'yellow', inStock: 14 },
     //    ..etc
     // ]
+    let stock = cakes.reduce((acc, cake) => {
+      let eachCake = {};
+      eachCake.flavor = cake.cakeFlavor;
+      eachCake.inStock = cake.inStock;
+      acc.push(eachCake)
+      return acc
+    },[])
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stock;
     return result;
 
     // Annotation:
@@ -192,7 +257,9 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let inStockCakes = cakes.filter(cake => cake.inStock > 0)
+    console.log(inStockCakes)
+    const result = inStockCakes;
     return result;
 
     // Annotation:
@@ -203,7 +270,11 @@ const cakePrompts = {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let totInventory = cakes.reduce((acc,cake)=>{
+      acc += cake.inStock;
+      return acc
+    },0)
+    const result = totInventory;
     return result;
 
     // Annotation:
@@ -214,8 +285,13 @@ const cakePrompts = {
     // Return an array of all unique toppings (no duplicates) needed to bake
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let toppings = cakes.reduce((acc, cake)=> {
+      cake.toppings.forEach(topping => {
+        acc.push(topping);
+      })
+      return [...new Set(acc)]
+    },[])
+    const result = toppings;
     return result;
 
     // Annotation:
@@ -610,6 +686,11 @@ const turingPrompts = {
     //   javascript: [ 'Travis', 'Louisa', 'Christie', 'Will' ],
     //   recursion: [ 'Pam', 'Leta' ]
     // }
+
+    const subjects = new Set(instructors.reduce((acc, teacher) => {
+      acc.push(teacher.teaches)
+      return acc
+    }, []))
 
     const result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
