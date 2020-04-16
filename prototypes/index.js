@@ -406,7 +406,10 @@ const classPrompts = {
     //iterate over the classrooms array
     //sort the array classroom by Capacity
     //
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let classroomCap = classrooms.sort((a,b) => {
+      return b.capacity - a.capacity
+    })
+    const result = classroomCap;
     return result;
 
   }
@@ -522,7 +525,11 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let highHumid = weather.sort((a,b)=>{
+      return a.humidity - b.humidity
+    }).pop()
+
+    const result = highHumid;
     return result;
 
     // Annotation:
