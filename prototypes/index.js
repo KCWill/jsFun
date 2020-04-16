@@ -1,3 +1,4 @@
+/* eslint-disable*/
 const {
   kitties
 } = require('./datasets/kitties');
@@ -401,12 +402,13 @@ const classPrompts = {
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
-
+    //
+    //iterate over the classrooms array
+    //sort the array classroom by Capacity
+    //
     const result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
 
-    // Annotation:
-    // Write your annotation here as a comment
   }
 };
 
@@ -422,14 +424,14 @@ const bookPrompts = {
   removeViolence() {
     // return an array of all book titles that are not horror or true crime. Eg:
 
-    //  ['1984', 'The Great Gatsby', 'Lord of the Flies', 'Harry Potter and the Sorcerer\'s Stone',
-    //   'The Hitchhiker\'s Guide to the Galaxy', 'Flowers for Algernon', 'Slaughterhouse-Five',
-    //   'The Handmaid\'s Tale', 'The Metamorphosis', 'Brave New World', 'Life of Pi',
-    //   'The Curious Incident of the Dog in the Night - Time', 'The Bell Jar',
-    //   'Catch-22', 'Treasure Island']
+    let nonViolentBooks = books.reduce((acc,book) => {
+      if (!(book.genre === 'Horror') && !(book.genre === 'True Crime')){
+        acc.push(book.title)
+      }
+      return acc
+    },[])
 
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nonViolentBooks
     return result;
 
     // Annotation:
@@ -444,7 +446,17 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let newBooks = books.reduce((acc,book) => {
+      if (book.published > 1989){
+        let novel = {};
+        novel.title = book.title;
+        novel.year = book.published;
+        acc.push(novel)
+      }
+      return acc
+    },[])
+
+    const result = newBooks;
     return result;
 
     // Annotation:
@@ -467,7 +479,12 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let avgTemps = weather.reduce((acc,place) => {
+      let averageTemp = (place.temperature.high + place.temperature.low)/2;
+      acc.push(averageTemp);
+      return acc
+    },[])
+    const result = avgTemps
     return result;
 
     // Annotation:
@@ -480,8 +497,16 @@ const weatherPrompts = {
     // [ 'Atlanta, Georgia is sunny.',
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
+    let sunnyPlaces = weather.reduce((acc,place) => {
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+      if(place.type.includes('sunny')){
+        acc.push(`${place.location} is ${place.type}.`)
+      }
+      return acc
+    },[])
+
+    console.log(sunnyPlaces)
+    const result = sunnyPlaces;
     return result;
 
     // Annotation:

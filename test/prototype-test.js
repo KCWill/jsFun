@@ -194,7 +194,7 @@ describe("PROTOTYPES", () => {
         program: "FE",
         capacity: 29
       }])
-    }), it.only("totalCapacities", () => {
+    }), it("totalCapacities", () => {
       const e = classPrompts.totalCapacities();
       expect(e).to.deep.equal({
         feCapacity: 110,
