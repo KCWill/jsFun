@@ -556,7 +556,26 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    //cycle through each object in the array nationalParks (reduce)
+    //add to a new object with keys parksToVisit and parksVisited depending on if the national park has been visited.
+
+    let visitingObject = nationalParks.reduce((acc,park) => {
+      if (acc['parksToVisit'] === undefined && park.visited === false){
+        acc['parksToVisit'] = [];
+        acc['parksToVisit'].push(park.name);
+      } else if (acc['parksVisited'] === undefined && park.visited === true){
+        acc['parksVisited'] = [];
+        acc['parksVisited'].push(park.name);
+      }
+      else if (park.visited === false){
+        acc['parksToVisit'].push(park.name);
+      } else
+        acc['parksVisited'].push(park.name);
+
+      return acc
+    },{})
+    console.log(visitingObject)
+    const result = visitingObject;
     return result;
 
     // Annotation:
@@ -572,8 +591,15 @@ const nationalParksPrompts = {
     // { Utah: 'Zion' },
     // { Florida: 'Everglades' } ]
 
+    //cycle through nationalParks and then extract the name of the park as a value and the key as the location.
+    let parks = [];
+    nationalParks.forEach((park) => {
+      let locationObject = {}
+      locationObject[park.location] = park.name;
+      return parks.push(locationObject);
+    })
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = parks;
     return result;
 
     // Annotation:
@@ -596,7 +622,17 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let activities = nationalParks.reduce((acc,park) => {
+      park.activities.forEach((activity) => {
+        if (acc.indexOf(activity) > -1){
+          return acc
+        }
+        acc.push(activity);
+      })
+      return acc
+    },[])
+    console.log(activities)
+    const result = activities;
     return result;
 
     // Annotation:
@@ -622,8 +658,11 @@ const breweryPrompts = {
   getBeerCount() {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let count = breweries.reduce((acc,brewery) => {
+      acc += brewery.beers.length;
+      return acc
+    },0)
+    const result = count;
     return result;
 
     // Annotation:
@@ -639,7 +678,17 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let brews = breweries.reduce((acc,brewery) => {
+      let breweryDetails = {};
+      breweryDetails['name'] = brewery.name;
+      breweryDetails['beerCount'] = 0;
+      brewery.beers.forEach((beer) => {
+        breweryDetails['beerCount']++
+      })
+      acc.push(breweryDetails);
+      return acc
+    },[])
+    const result = brews;
     return result;
 
     // Annotation:
@@ -650,8 +699,18 @@ const breweryPrompts = {
     // Return the beer which has the highest ABV of all beers
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
+    let allBeers = breweries.reduce((acc,brewery) => {
+      brewery.beers.forEach((beer) => {
+        acc.push(beer)
+        return acc
+      })
+      return acc
+    },[]);
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let topBeer = allBeers.sort((a,b) => {
+      return b.abv - a.abv
+    }).shift()
+    const result = topBeer;
     return result;
 
     // Annotation:
@@ -698,8 +757,18 @@ const turingPrompts = {
     //  { name: 'Pam', studentCount: 21 },
     //  { name: 'Robbie', studentCount: 18 }
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let teacherNums = instructors.reduce((acc,instructor)=>{
+      let instructorNum = {};
+      cohorts.forEach((cohort) => {
+        if (instructor.module === cohort.module){
+          instructorNum.name = instructor.name;
+          instructorNum.studentCount = cohort.studentCount;
+        }
+      })
+      acc.push(instructorNum)
+      return acc
+    },[])
+    const result = teacherNums;
     return result;
 
     // Annotation:
@@ -713,7 +782,27 @@ const turingPrompts = {
     // cohort1804: 10.5
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let studentsPerTeacher = {};
+    // let teachersPerCohort = instructors.reduce((acc,instructor)=>{
+    //   if (acc[`Mod${instructor.module}`] === undefined){
+    //     acc[`Mod${instructor.module}`] = 0;
+    //   }
+    //   acc[`Mod${instructor.module}`]++;
+    //   return acc
+    // },{})
+    //
+    cohorts.forEach((cohort) => {
+      let instructorCount = instructors.reduce((acc,instructor) => {
+        if(instructor.module === cohort.module){
+          acc++
+        }
+        return acc;
+      },0);
+      studentsPerTeacher[`cohort${cohort.cohort}`] = cohort.studentCount/instructorCount;
+
+      return studentsPerTeacher
+    })
+    const result = studentsPerTeacher;
     return result;
 
     // Annotation:
@@ -735,7 +824,23 @@ const turingPrompts = {
     //     Will: [1, 2, 3, 4]
     //   }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    //Cycle through each instructor and then cycle through each skill to search in the modules for an existing skill in that module.
+
+    let answer = instructors.reduce((acc,instructor) => {
+      acc[instructor.name] = [];
+      instructor.teaches.forEach((iSubject)=>{
+        cohorts.forEach((cohort) => {
+          if(cohort.curriculum.indexOf(iSubject) > -1){
+            return acc[instructor.name].push(cohort.module)
+          }
+        })
+      })
+      acc[instructor.name] = [...new Set(acc[instructor.name])];
+      acc[instructor.name].sort((a,b)=>{return a-b})
+      return acc
+    },{})
+    console.log(answer)
+    const result = answer;
     return result;
 
     // Annotation:
@@ -752,12 +857,20 @@ const turingPrompts = {
     //   recursion: [ 'Pam', 'Leta' ]
     // }
 
-    const subjects = new Set(instructors.reduce((acc, teacher) => {
-      acc.push(teacher.teaches)
+    let curriculumTeachers = cohorts.reduce((acc, cohort) => {
+      cohort.curriculum.forEach((cSubject)=>{
+        acc[cSubject] = [];
+      })
       return acc
-    }, []))
+    },{})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    instructors.forEach((instructor) => {
+        instructor.teaches.forEach((iSubject) => {
+          curriculumTeachers[iSubject].push(instructor.name)
+        })
+    })
+
+    const result = curriculumTeachers;
     return result;
 
     // Annotation:
@@ -792,7 +905,27 @@ const bossPrompts = {
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    //iterate through each boss
+    //interate through each sidekick and add to the total.
+    //return objects with names and sidekickLoyalty
+    let bossList = Object.keys(bosses);
+    let loyalties = bossList.reduce((acc,boss) => {
+        let loyalty = 0;
+        let bossDetails = {};
+        bossDetails.bossName = bosses[boss].name;
+        bossDetails.sidekickLoyalty = 0;
+        sidekicks.forEach(sidekick => {
+          if(sidekick.boss === bosses[boss].name){
+            bossDetails.sidekickLoyalty += sidekick.loyaltyToBoss;
+          }
+        })
+        acc.push(bossDetails);
+      return acc
+    },[]);
+
+    console.log(loyalties)
+
+    const result = loyalties;
     return result;
 
     // Annotation:
@@ -833,8 +966,29 @@ const astronomyPrompts = {
     //     lightYearsFromEarth: 640,
     //     color: 'red' }
     // ]
+    // create key array from constellation objects
+    //Iterate through constellations
+    //For each constellation, push star info into resulting array.
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let constellationNames = Object.keys(constellations);
+
+    let starsCon = constellationNames.reduce((acc, constellation) => {
+        constellations[constellation].stars.forEach(starC => {
+          stars.forEach((starI)=>{
+            if (starC === starI.name){
+              acc.push(starI)
+            }
+          })
+        })
+        return acc
+    },[])
+
+    starsCon.sort((a,b)=>{
+      return b.lightYearsFromEarth - a.lightYearsFromEarth
+    })
+
+    console.log(starsCon);
+    const result = starsCon;
     return result;
 
     // Annotation:
@@ -852,7 +1006,17 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let starColor = stars.reduce((acc,star) => {
+      acc[star.color] = [];
+      return acc
+    },{})
+
+    stars.forEach(star => {
+      starColor[star.color].push(star)
+    })
+
+    console.log(starColor)
+    const result = starColor;
     return result;
 
     // Annotation:
@@ -873,8 +1037,15 @@ const astronomyPrompts = {
     //    "Orion",
     //    "The Little Dipper" ]
 
+    let bigStars = stars.reduce((acc, star) => {
+      if(star.constellation.length > 0){
+      acc.push(star.constellation)
+      }
+      return acc
+    },[])
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+
+    const result = bigStars;
     return result;
 
     // Annotation:
@@ -904,8 +1075,24 @@ const ultimaPrompts = {
 
     // Return the sum of the amount of damage for all the weapons that our characters can use
     // Answer => 113
+    //Create array of weapons
+    //iterate through characters and then iterate through each weapon for the characters
+    //add up the damage for each weapon
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let weaponArray = Object.keys(weapons);
+
+    let totalDamage = characters.reduce((acc,character) => {
+      character.weapons.forEach((weaponC) => {
+        weaponArray.forEach(weaponA => {
+          if (weaponC === weaponA){
+            acc += weapons[weaponA].damage;
+          }
+        })
+      })
+      return acc
+    },0)
+
+    const result = totalDamage;
     return result;
 
     // Annotation:
@@ -916,8 +1103,29 @@ const ultimaPrompts = {
 
     // Return the sum damage and total range for each character as an object.
     // ex: [ { Avatar: { damage: 27, range: 24 }, { Iolo: {...}, ...}
+    let weaponArray = Object.keys(weapons);
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let charStats = characters.reduce((acc,character) => {
+      let statWeapons = {
+        damage: 0,
+        range: 0
+      };
+      let charObj = {};
+      charObj[character.name] = statWeapons;
+      character.weapons.forEach(weaponC =>{
+        weaponArray.forEach(weaponA => {
+          if(weaponC === weaponA){
+            statWeapons.damage += weapons[weaponA].damage;
+            statWeapons.range += weapons[weaponA].range;
+          }
+        })
+      })
+      acc.push(charObj)
+      return acc
+    },[])
+
+
+    const result = charStats;
     return result;
 
     // Annotation:
@@ -954,7 +1162,25 @@ const dinosaurPrompts = {
     //   'Jurassic World: Fallen Kingdom': 18
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    // Create array of only awesome dinosaurs
+    // irterate through movies (reduce)
+    //iterate through dinos in movies and check if they are in awesome array, if they are, +1, if not +0
+
+    let awesomeDinos = Object.keys(dinosaurs).filter(dinosaur => dinosaurs[dinosaur].isAwesome);
+
+    let countAwesomeDinos = movies.reduce((acc,movie) => {
+      let count = 0;
+      movie.dinos.forEach(dino => {
+        if(awesomeDinos.indexOf(dino) > -1){
+          count++
+        }
+        return count
+      })
+      acc[movie.title] = count;
+      return acc
+    },{})
+
+    const result = countAwesomeDinos;
     return result;
 
     // Annotation:
@@ -986,8 +1212,36 @@ const dinosaurPrompts = {
           }
       }
     */
+    //Make array of directors
+    //make those directors keys of objects
+    //calculate average age for each movie
+    //put into object with the movies as keys and average age as values;
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let directors = movies.reduce((acc,movie) => {
+      acc.push(movie.director);
+      return acc
+    },[])
+
+    let directorAndAges = directors.reduce((acc,director) => {
+      acc[director] = {};
+
+      movies.forEach(movie => {
+        if(director === movie.director){
+          let totalAge = 0;
+          movie.cast.forEach((actor) => {
+            let age = movie.yearReleased - humans[actor].yearBorn;
+            totalAge += age;
+          return totalAge
+        })
+        let averageAge = totalAge / movie.cast.length
+        acc[director][movie.title] = Math.floor(averageAge);
+        }
+      })
+      return acc
+    },{})
+    console.log(directorAndAges)
+
+    const result = directorAndAges;
     return result;
 
     // Annotation:
@@ -1019,8 +1273,41 @@ const dinosaurPrompts = {
         imdbStarMeterRating: 0
       }]
     */
+    //create an array of all humans with names
+    //create array of people who were cast in the movies
+    //create an array of people who were not cast in the movies by filtering the humans
+    //create array with objects of people no charStats
+    //Alphabetize based on nationality
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let humanArray = Object.keys(humans);
+    let castActors = movies.reduce((acc,movie) => {
+      movie.cast.forEach(actor => {
+        acc.push(actor)
+      })
+      return acc
+    },[]);
+
+    let uncast = humanArray.filter(person => castActors.indexOf(person) === -1)
+    let uncastActors = uncast.reduce((acc,actor)=>{
+      let person = {
+        name: actor,
+        nationality: humans[actor].nationality,
+        imdbStarMeterRating: humans[actor].imdbStarMeterRating
+      }
+      acc.push(person);
+        return acc
+    },[])
+
+    uncastActors.sort((a,b) => {
+      if (a.nationality > b.nationality){
+        return 1
+      } if (a.nationality < b.nationality){
+        return -1
+      }
+      return 0
+    })
+    console.log('ordered',uncastActors)
+    const result = uncastActors
     return result;
 
     // Annotation:
@@ -1042,8 +1329,26 @@ const dinosaurPrompts = {
       { name: 'Chris Pratt', ages: [ 36, 39 ] },
       { name: 'Bryce Dallas Howard', ages: [ 34, 37 ] } ]
     */
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let names = Object.keys(humans);
+    let actorDetails = [];
+    names.forEach((actor)=>{
+      let details = {
+        name: actor,
+        ages: []
+      }
+      movies.forEach(movie => {
+        if(movie.cast.indexOf(actor) > -1){
+          details.ages.push(movie.yearReleased -humans[actor].yearBorn);
+        }
+      })
+      if(details.ages.length === 0){
+        return
+      }
+      actorDetails.push(details);
+      return actorDetails
+    })
+    console.log(actorDetails)
+    const result = actorDetails;
     return result;
 
     // Annotation:

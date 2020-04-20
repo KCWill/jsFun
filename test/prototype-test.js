@@ -276,7 +276,7 @@ describe("PROTOTYPES", () => {
       expect(e).to.deep.equal(['Atlanta, Georgia is sunny.', 'New Orleans, Louisiana is sunny.', 'Raleigh, North Carolina is mostly sunny.']
       )
     }),
-    it.only("findHighestHumidity", () => {
+    it("findHighestHumidity", () => {
       const e = weatherPrompts.findHighestHumidity();
       expect(e).to.deep.equal({
         location: 'Portland, Oregon',
@@ -529,7 +529,7 @@ describe("PROTOTYPES", () => {
       })
     }), it("constellationsStarsExistIn", () => {
       const e = astronomyPrompts.constellationsStarsExistIn();
-      expect(e).to.deep.equal(["Canis Major", "Carina", "Boötes", "Auriga", "Orion", "Lyra", "Canis Minor", "The Plow", "Orion", "The Little Dipper"])
+      expect(e).to.deep.equal(["Canis Major", "Carina", "Boötes", "Lyra", "Auriga", "Orion", "Canis Minor", "The Plow", "Orion", "The Little Dipper"])
     })
   }), describe("Ultima Prompts", () => {
     it("totalDamage", () => {
